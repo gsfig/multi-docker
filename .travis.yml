@@ -4,20 +4,20 @@ services:
   - docker
 
 before_install:
-  - docker built -t willcarver123/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t willcarver123/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true willcarver123/react-test npm test
 
 after_success:
-  - docker built -t willcarver123/multi-client ./client
-  - docker built -t willcarver123/multi-nginx ./nginx
-  - docker built -t willcarver123/multi-server ./server
-  - docker built -t willcarver123/multi-worker ./worker
-  # log in to docker CLI
+  - docker build -t willcarver123/multi-client ./client
+  - docker build -t willcarver123/multi-nginx ./nginx
+  - docker build -t willcarver123/multi-server ./server
+  - docker build -t willcarver123/multi-worker ./worker
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # take images and push to dockerhub
+  # Take those images and push them to docker hub
   - docker push willcarver123/multi-client
-  - docker push willcarver123/multi-server
   - docker push willcarver123/multi-nginx
+  - docker push willcarver123/multi-server
   - docker push willcarver123/multi-worker
